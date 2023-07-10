@@ -16,13 +16,23 @@ main.appendChild(randomPhoto);
 
 const imgs = document.getElementsByTagName("img");
 let clicked = 0;
+let previousImg = null;
 let selected = [];
 for (let i=0 ;i<imgs.length;i++){
     const currentImg = imgs[i];
-    currentImg.addEventListener("click",()=>{
-        selected.push(currentImg);
-        clicked++;
-        currentImg.classList.add("selected");  
+    currentImg.addEventListener("click",()=>{ 
+		if (currentImg === previousImg) {
+      // Clicked the same image again
+      currentImg.classList.remove("selected");
+      // selected = selected.filter((img) => img !== currentImg);
+      clicked--; //0
+      if(clicked === 0) reset.style.display = "none";
+      verify.style.display = "none";
+    } else {
+      selected.push(currentImg);
+      clicked++; //1
+      currentImg.classList.add("selected");
+		}  
         if(clicked === 1){
               reset.style.display = "flex";
             reset.addEventListener("click",()=>{
@@ -38,7 +48,9 @@ for (let i=0 ;i<imgs.length;i++){
         else{
             verify.style.display = "none";
         }
+		previousImg === null ? previousImg = currentImg : previousImg = null;
     })
+	 
 }
 
 verify.addEventListener("click",()=>{
